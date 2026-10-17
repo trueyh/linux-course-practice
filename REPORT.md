@@ -179,7 +179,7 @@ Linux在实验中提供了文件管理、权限控制、程序运行和日志保
 
 本报告由AI辅助整理课程资料、解释代码和组织文字；操作、截图和个人观察由本人完成。仓库保留实际练习脚本、数据、原始日志、结果图片和复现说明，教师可据此核对。
 
-成果仓库：[trueyh/linux-](https://github.com/trueyh/linux-)；在线报告：[REPORT.md](https://github.com/trueyh/linux-/blob/main/REPORT.md)。本地对应文件为 [README](README.md)、[复现说明](REPRODUCE.md)、[结果图片与截图](evidence/)、[原始日志](logs/)及[统计输出](results/fusion_summary.txt)。
+成果仓库：[trueyh/linux-course-practice](https://github.com/trueyh/linux-course-practice)；在线报告：[REPORT.md](https://github.com/trueyh/linux-course-practice/blob/main/REPORT.md)。本地对应文件为 [README](README.md)、[复现说明](REPRODUCE.md)、[结果图片与截图](evidence/)、[原始日志](logs/)及[统计输出](results/fusion_summary.txt)。
 
 ## 参考资料
 
