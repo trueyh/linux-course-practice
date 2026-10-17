@@ -1,0 +1,11 @@
+Rules with effect_times > 0:
+BatchNormBnInferFusionPass 1
+BatchNormPreprocessFusionPass 1
+FIXPIPEFUSIONPASS 47
+FixPipeAbilityProcessPass 50
+HostBNFusionPass 1
+MatMulBiasAddFusionPass 1
+MatMulTransposeWeightFusionPass 1
+TransposedUpdateFusionPass 15
+Total rules: 37
+Rules with positive effect_times: 8

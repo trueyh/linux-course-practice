@@ -1,0 +1,11 @@
+Using device: cpu
+Using model: /home/xuyiheng/linux_report/Ascend310/samples/case2/models/ssd320_mobilenetv3_large_100.onnx
+Capture request: profile=auto, mjpeg=on
+Capture backend: FFMPEG, buffer=0
+Capture stream: size=768x576, fps=10.00
+Input: name=input, shape=[1, 3, 320, 320], type=tensor(float)
+Input size used: 320x320
+Output: name=boxes, shape=[1, 4, 3234], type=tensor(float)
+Output: name=scores, shape=[1, 81, 3234], type=tensor(float)
+Press 'q' to quit.
+Video stream ended or camera frame read failed.

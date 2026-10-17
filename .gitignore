@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+Ascend310/
+*.onnx
+*.om
+*.mp4
+*.avi
