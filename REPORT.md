@@ -1,10 +1,14 @@
-# Linux基础操作与Python视觉应用课程实践报告
+# Linux基础操作与Python视觉应用 课程实践报告
+
+姓名：徐屹恒    学号：3124000174  
+班级：24机械设计制造及自动化5班  
+成果仓库：[https://github.com/trueyh/linux-course-practice](https://github.com/trueyh/linux-course-practice)
 
 ## 一 课程学习背景与实践目标
 
-我是一名机械工程专业本科生，编程基础较薄弱。选修Linux入门课程后，我接触了文件管理、终端操作、Python程序运行和SSH远程连接，也曾在课堂中通过局域网连接教师的开发板。
+我对编程接触较少，只在之前的c语言课程里了解过一些基本语法。选修本课程后，我接触了文件管理、终端操作、Python程序运行和SSH远程连接，也曾在课堂中通过局域网连接教师的开发板，大大增加了我对计算机的了解。
 
-教师课程资料围绕昇腾310B平台组织，包含Ubuntu基础、Python编程、远程开发以及人脸考勤、目标跟踪和智能电子琴等案例。课件展示的实验板为Orange Pi AIpro（8T）。本次无法使用教师开发板，因此在自己的Windows 11电脑上安装WSL和Ubuntu，使用教师案例提供的CPU运行方式完成实践。板卡说明见课程的[硬件基础课件](https://github.com/zhouxzh/Ascend310/blob/2b1c6f509dc9bf12715b65413dd9edebcaffdce2/src/presentation/01-hardware-basics.md)。
+教师课程资料围绕华为昇腾310B组织，包含Ubuntu基础、Python编程、远程开发以及人脸考勤、目标跟踪和智能电子琴等案例。课件展示的实验板为Orange Pi AIpro（8T）。本次无法使用教师开发板，因此在自己的Windows 11电脑上安装WSL和Ubuntu，使用教师案例提供的CPU运行方式完成实践。
 
 本次具体任务是：建立实验目录，对比脚本执行权限修改前后的结果；使用Python读取教师提供的JSON文件并统计符合条件的规则；运行现成的目标检测和跟踪程序，检查输出视频，并比较不同阈值下同一帧的检测结果。
 
@@ -12,7 +16,7 @@
 
 ### 2.1 环境安装过程
 
-开始实验时，我发现这台电脑并没有安装WSL。在管理员PowerShell中查看状态后，系统提示尚未安装适用于Linux的Windows子系统。我执行 `wsl --install -d Ubuntu-22.04`，完成WSL组件和虚拟机平台的安装，再根据提示重启。重启后检查发现没有已安装的Linux分发，于是继续执行安装命令，安装Ubuntu并创建普通用户。
+开始实验时，我发现这台电脑并没有安装WSL。在管理员PowerShell中查看状态后，系统提示尚未安装适用于Linux的Windows子系统。我用 `wsl --install -d Ubuntu-22.04`完成WSL组件和虚拟机平台的安装，再根据提示重启。重启后检查发现没有已安装的Linux分发，于是继续执行安装命令，安装Ubuntu并创建普通用户。
 
 WSL组件与Ubuntu分发版需要分别完成安装。首次设置Linux密码时，终端不显示输入字符；输入并确认密码后，系统提示密码更新成功。
 
@@ -21,8 +25,8 @@ WSL组件与Ubuntu分发版需要分别完成安装。首次设置Linux密码时
 | 项目 | 本次环境 |
 |---|---|
 | 主机系统 | Windows 11 |
-| 内存 | 16 GB，依据本人电脑配置说明 |
-| WSL软件包 | 安装界面显示3.0.3；该版本号与WSL1/WSL2运行模式不同 |
+| 内存 | 16 GB |
+| WSL软件包 | 安装界面显示3.0.3 |
 | Linux分发版 | Ubuntu 22.04.5 LTS |
 | Python | 3.10.12 |
 | 数值与图像依赖 | NumPy 1.26.4、OpenCV 4.11.0.86、SciPy 1.12.0 |
@@ -47,7 +51,7 @@ WSL组件与Ubuntu分发版需要分别完成安装。首次设置Linux密码时
 
 本实验检验文件存在、内容可读和文件可直接执行之间的区别。我在AI辅助指导下创建 `code/hello.sh`，内容如下：
 
-```bash
+```
 #!/bin/bash
 echo "Linux permission experiment"
 echo "Current directory:"
@@ -58,7 +62,7 @@ pwd
 
 接着执行 `chmod u+x code/hello.sh`，权限变为 `-rwxr--r--`。再次运行相同脚本，成功输出：
 
-```text
+```
 Linux permission experiment
 Current directory:
 /home/xuyiheng/linux_report
@@ -82,7 +86,7 @@ Current directory:
 
 核心代码为：
 
-```python
+```
 rules = data["session_and_graph_id_0_0"]["graph_fusion"]
 count = 0
 for name, counters in rules.items():
@@ -136,11 +140,11 @@ for name, counters in rules.items():
 
 ![图8 阈值0.35的第100帧](evidence/detection_035_frame100.jpg)
 
-第100帧中，左上方远处的行人没有检测框，路灯遮挡附近的人员存在漏检，两名并排行人未被分别完整检出。画面共显示5个检测结果，其中包含右上方的车辆。
+第100帧中，左上方远处的行人没有检测框，路灯遮挡附近的人员存在漏检，两名并排行人未被分别完整检出，被识别为一个整体。画面共显示5个检测结果，其中包含右上方的车辆。
 
 ### 5.4 置信度阈值对比
 
-保持视频、模型和其余参数不变，我把置信度阈值由0.35降为0.20，再提取同一第100帧。较低阈值会保留更多低分候选结果。
+我再保持视频、模型和其余参数不变的情况下，把置信度阈值由0.35降为0.20，再提取同一第100帧。较低阈值会保留更多低分候选结果。
 
 ![图9 阈值0.20的第100帧](evidence/detection_020_frame100.jpg)
 
@@ -151,7 +155,7 @@ for name, counters in rules.items():
 | 并排行人 | 未分别完整检出 | 未分别完整检出 |
 | 大范围背景框 | 未出现 | 出现明显不合理的大框 |
 
-在所比较的第100帧中，降低阈值后远处行人出现了检测框，同时出现重复框和大范围背景框。路灯附近和并排行人的问题仍然存在。这个对比说明，降低阈值在该帧中补充了检测结果，也引入了错误结果；它不足以判断整段视频中哪个阈值更合适。
+在所比较的第100帧中，降低阈值后远处行人出现了检测框，但是在远处行人旁边出现了重复框，还有一个不知为何出现的大范围背景框。路灯附近和并排行人的问题仍然存在。这个对比说明，降低阈值在该帧中补充了检测结果，也引入了错误结果；它不足以判断整段视频中哪个阈值更合适，如果要投入使用，需要再中间取一个合适的阈值。
 
 我推测，远处人物缩放后细节减少、遮挡后可见特征不足，可能影响检测。并排行人的身体重叠以及程序对候选框的筛选，也可能影响最终结果。本次没有检查全部候选框，尚未确定这些现象的具体原因。
 
@@ -165,35 +169,40 @@ for name, counters in rules.items():
 
 两幅图中出现了目标编号和轨迹线，但远处人员和遮挡附近仍有漏检，并排行人也未被分别完整检出。在这两帧中，两名并排行人的位置接近；是否因此影响检测和关联，还需要进一步检查。
 
-部分编号标签重叠，仅凭这两幅图无法判断整段视频中同一人物的编号是否稳定。这里的编号用于关联前后帧中的目标，不表示人物真实身份。
+110中由于100帧中蓝灰色框的男人也被路灯遮挡，导致框到了紫色框男人身上。路灯的遮挡对识别的影响确实很大。
 
-截图显示10 FPS，与输入视频帧率一致。本次没有单独测试处理速度，不将这个数值作为CPU性能结论。
+截图显示10 FPS，与输入视频帧率一致。本次没有单独测试处理速度。
 
 ## 六 课程应用理解与专业思考
 
-课程还介绍了人脸考勤和智能电子琴，本次实际运行的是目标检测与跟踪的CPU程序。
+课程还介绍了人脸考勤和智能电子琴，本次实际运行的是目标检测与跟踪的CPU程序，此内容老师在课堂上用摄像头演示过（可用于某种移动目标的精准打击）。
 
 我曾把检测理解为截取关键帧识别，把跟踪理解为持续识别。本案例的检测程序本身也逐帧处理视频，跟踪则进一步关联前后帧中的目标。是否持续运行检测程序，与是否维护同一目标的编号和轨迹，是两个不同的问题。
 
-结合机械工程，我最关注遮挡造成的人员漏检。在本次展示的画面中，路灯附近可见人员，但没有相应的完整检测框。如果将类似视觉程序用于移动设备，人员与机器在画面中重叠时的漏检，可能影响设备对障碍物的判断和路径规划。这是根据实验现象提出的应用设想，本次没有连接真实设备，也没有运行路径规划程序。
+结合我自己的专业，我比较关注遮挡造成的人员漏检。在这次展示的画面中，路灯附近可见人员，但没有相应的完整检测框，并且在跟踪实验中行人进入路灯遮挡区导致错误轨迹预测。如果将类似视觉程序用于移动设备，人员与机器在画面中重叠时的漏检，可能影响设备对障碍物的判断和路径规划，或许会导致仓储运输中的人机碰撞。
 
 ## 七 学习总结与成果索引
 
 本次在Windows 11电脑上搭建了WSL Ubuntu环境，完成文件权限对比、JSON数据统计，以及教师检测和跟踪程序的CPU运行。实验文件包括练习脚本、输入数据、运行日志、统计输出和结果截图。
 
-目前我对复杂跟踪算法仍主要停留在流程理解，尚不能独立实现卡尔曼滤波或神经网络。后续计划先学习函数和模块组织，再尝试导出轨迹坐标，条件允许时回到开发板比较CPU与NPU运行环境的差异。
+目前我对复杂跟踪算法仍主要停留在流程理解，卡尔曼滤波或神经网络这些更是仅仅知道而已。后续计划先学习相关知识，条件允许的话自己搞块开发板研究研究。
 
 这些操作是在教师资料和AI指导下完成的。检测、跟踪程序及已训练模型来自教师案例及其提供的模型来源；`code/hello.sh`、`code/analyze_fusion.py` 等练习脚本，以及下载、检查帧数和提取图片所用的辅助代码，有AI参与提供或编写。本人在电脑上执行命令和程序、保存截图，并提出对漏检、重复框和遮挡问题的观察。AI还辅助解释命令和代码、整理课程资料及修改报告文字。
 
-成果仓库：[trueyh/linux-course-practice](https://github.com/trueyh/linux-course-practice)；在线报告：[REPORT.md](https://github.com/trueyh/linux-course-practice/blob/main/REPORT.md)。本地对应文件为 [README](README.md)、[复现说明](REPRODUCE.md)、[结果图片与截图](evidence/)、[原始日志](logs/)及[统计输出](results/fusion_summary.txt)。
+成果仓库：[trueyh/linux-course-practice](https://github.com/trueyh/linux-course-practice)；在线报告：[REPORT.md](https://github.com/trueyh/linux-course-practice/blob/main/REPORT.md)。
 
 ## 参考资料
 
-1. 周贤中，昇腾310B课程仓库：https://github.com/zhouxzh/Ascend310 。
-2. 课程演示目录：https://github.com/zhouxzh/Ascend310/tree/main/src/presentation 。
-3. 实际使用的案例代码版本：https://github.com/zhouxzh/Ascend310/tree/2b1c6f509dc9bf12715b65413dd9edebcaffdce2/samples/case2 。
-4. SSDLite320模型来源：https://huggingface.co/zhouxzh/SSDLite320 。
-5. OpenCV测试视频：https://github.com/opencv/opencv/blob/4.x/samples/data/vtest.avi 。
-6. Microsoft，WSL安装说明：https://learn.microsoft.com/zh-cn/windows/wsl/install 。
+1. 周贤中老师，昇腾310B课程仓库：[https://github.com/zhouxzh/Ascend310](https://github.com/zhouxzh/Ascend310) 。
 
-本报告图片均为本人实验截图或本人运行输出视频提取帧；原视频来自OpenCV，检测与跟踪程序来自教师仓库。详细来源见 [SOURCES.md](SOURCES.md)。
+2. 课程演示目录：[https://github.com/zhouxzh/Ascend310/tree/main/src/presentation](https://github.com/zhouxzh/Ascend310/tree/main/src/presentation) 。
+
+3. 实际使用的案例代码版本：[https://github.com/zhouxzh/Ascend310/tree/2b1c6f509dc9bf12715b65413dd9edebcaffdce2/samples/case2](https://github.com/zhouxzh/Ascend310/tree/2b1c6f509dc9bf12715b65413dd9edebcaffdce2/samples/case2) 。
+
+4. SSDLite320模型来源：[https://huggingface.co/zhouxzh/SSDLite320](https://huggingface.co/zhouxzh/SSDLite320) 。
+
+5. OpenCV测试视频：[https://github.com/opencv/opencv/blob/4.x/samples/data/vtest.avi](https://github.com/opencv/opencv/blob/4.x/samples/data/vtest.avi) 。
+
+6. Microsoft，WSL安装说明：[https://learn.microsoft.com/zh-cn/windows/wsl/install](https://learn.microsoft.com/zh-cn/windows/wsl/install) 。
+
+本报告图片均为本人实验截图或本人运行输出视频提取帧；原视频来自OpenCV，检测与跟踪程序来自教师仓库。详细来源见 [SOURCES.md](https://github.com/trueyh/linux-course-practice/blob/main/SOURCES.md)。
